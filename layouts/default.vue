@@ -54,8 +54,10 @@
               <p>
                 <nuxt-link to="/">修改信息</nuxt-link>
               </p>
-              <p @click="signOut">
-                退出帐户
+              <p>
+                <a-button type="link" @click="signOut" style="padding: 0;">
+                  退出帐户
+                </a-button>
               </p>
             </template>
             <a-avatar size="large" icon="user"/>
