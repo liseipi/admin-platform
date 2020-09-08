@@ -28,6 +28,9 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  loading: {
+    color: '#1890ff'
+  },
   /*
   ** Global CSS
   */
@@ -40,7 +43,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/antd-ui'
+    '@/plugins/antd-ui',
+    '@/plugins/axios'
   ],
   /*
   ** Auto import components
@@ -48,8 +52,8 @@ export default {
   */
   components: true,
   router: {
-    prefetchLinks: false
-    // middleware: ''
+    prefetchLinks: false,
+    middleware: ['auth']
   },
   /*
   ** Nuxt.js dev-modules
@@ -60,7 +64,9 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
+    'cookie-universal-nuxt'
   ],
   /*
   ** Axios module configuration
@@ -86,7 +92,7 @@ export default {
     cookie: {
       prefix: 'auth.',
       options: {
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24,
         path: '/',
         ...(function() {
           return process.env.NODE_ENV === 'production' ? {
@@ -99,31 +105,21 @@ export default {
     },
     strategies: {
       local: {
-        // token: {
-        //   property: 'data.token',
-        //   // required: true,
-        //   type: 'bearer',
-        //   maxAge: 60 * 9
-        // },
-        // refreshToken: {
-        //   property: 'data.token',
-        //   data: 'data.token',
-        //   maxAge: 60 * 9
-        // },
-        // user: {
-        //   property: 'data',
-        //   autoFetch: true
-        // },
-        endpoints: {
-          login: { url: '/api/user/login', method: 'post', propertyName: 'data.token' },
-          logout: { url: '/api/user/logout', method: 'get' },
-          user: { url: '/api/user/me', method: 'get', propertyName: 'data' }
+        token: {
+          property: 'result.token',
+          // required: true,
+          type: 'bearer',
+          maxAge: 60 * 60 * 24
         },
-        tokenType: 'bearer',
-        autoFetchUser: false
-      },
-      google: {
-        client_id: process.env.GOOGLE_CLIENT_ID || ''
+        user: {
+          property: 'result'
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/api/login', method: 'post' },
+          logout: { url: '/api/login/logout', method: 'get' },
+          user: { url: '/api/login/info', method: 'get' }
+        }
       }
     },
     localStorage: false,
@@ -131,7 +127,7 @@ export default {
     fullPathRedirect: true,
     resetOnError: true,
     redirect: {
-      login: '/entry/login',
+      login: '/login',
       home: '/',
       logout: '/',
       callback: false

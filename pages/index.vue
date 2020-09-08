@@ -15,5 +15,10 @@
 </template>
 
 <script>
-export default {}
+  export default {
+    async beforeCreate() {
+      let data = await this.$axios.get(this.$store.state.api.dashboard)
+      console.log(data)
+    }
+  }
 </script>

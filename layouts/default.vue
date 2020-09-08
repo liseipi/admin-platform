@@ -54,8 +54,8 @@
               <p>
                 <nuxt-link to="/">修改信息</nuxt-link>
               </p>
-              <p>
-                <nuxt-link to="/">退出帐户</nuxt-link>
+              <p @click="signOut">
+                退出帐户
               </p>
             </template>
             <a-avatar size="large" icon="user"/>
@@ -81,6 +81,12 @@
         collapsed: false
       }
     },
-    methods: {}
+    methods: {
+      async signOut() {
+        await this.$auth.logout('local')
+        this.$cookies.removeAll()
+        this.$router.replace('/login')
+      }
+    }
   }
 </script>
