@@ -83,9 +83,9 @@ export default {
     '/api': {
       changeOrigin: true,
       target: process.env.API_URL,
-      pathRewrite: {
-        '^/api': '/v0'
-      }
+      // pathRewrite: {
+      //   '^/api': '/v0'
+      // }
     }
   },
   auth: {
@@ -107,18 +107,16 @@ export default {
       local: {
         token: {
           property: 'result.token',
-          // required: true,
-          type: 'bearer',
           maxAge: 60 * 60 * 24
         },
         user: {
-          property: 'result'
-          // autoFetch: true
+          property: 'result.user',
+          autoFetch: true
         },
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: { url: '/api/login/logout', method: 'get' },
-          user: { url: '/api/login/info', method: 'get' }
+          user: { url: '/api/login/userInfo', method: 'get' }
         }
       }
     },

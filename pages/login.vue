@@ -46,32 +46,32 @@
 </template>
 
 <script>
-  export default {
-    name: 'login',
-    layout: 'block',
-    auth: false,
-    data() {
-      return {
-        form: this.$form.createForm(this)
-      }
-    },
-    methods: {
-      handleSubmit(e) {
-        e.preventDefault()
-        this.form.validateFields(async (err, values) => {
-          if (!err) {
-            try {
-              let response = await this.$auth.loginWith('local', { data: values })
-              // console.log(response)
-              if (response.data && response.data.result) {
-                this.$router.push('/')
-              }
-            } catch (err) {
-              console.log(err)
-            }
+export default {
+  name: 'login',
+  layout: 'block',
+  auth: false,
+  data() {
+    return {
+      form: this.$form.createForm(this)
+    }
+  },
+  methods: {
+    handleSubmit(e) {
+      e.preventDefault()
+      this.form.validateFields(async (err, values) => {
+        if (!err) {
+          try {
+            let response = await this.$auth.loginWith('local', { data: values })
+            console.log(response)
+            // if (response && response.status == 200) {
+            //   this.$router.push('/')
+            // }
+          } catch (err) {
+            console.log(err)
           }
-        })
-      }
+        }
+      })
     }
   }
+}
 </script>
