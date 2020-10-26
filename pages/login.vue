@@ -62,10 +62,10 @@ export default {
         if (!err) {
           try {
             let response = await this.$auth.loginWith('local', { data: values })
-            console.log(response)
-            // if (response && response.status == 200) {
-            //   this.$router.push('/')
-            // }
+            // console.log(response)
+            if (response && response.status == 200) {
+              this.$router.push('/')
+            }
           } catch (err) {
             console.log(err)
           }

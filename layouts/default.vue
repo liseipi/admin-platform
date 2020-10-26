@@ -1,7 +1,12 @@
 <template>
   <a-layout id="layout-side">
     <a-layout-sider id="layout-left-side" v-model="collapsed" width="256">
-      <div class="logo"/>
+      <div class="logo">
+        <span>
+          <img src="~/static/logo.svg" width="32" alt="logo">
+          <h1>Admin Platform</h1>
+        </span>
+      </div>
       <a-menu theme="dark" :default-selected-keys="['1']" mode="inline">
         <a-menu-item key="1" @click="$router.push('/')">
           <a-icon type="pie-chart"/>

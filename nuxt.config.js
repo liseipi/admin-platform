@@ -65,7 +65,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
     'cookie-universal-nuxt'
   ],
   /*
@@ -105,22 +105,16 @@ export default {
     },
     strategies: {
       local: {
-        token: {
-          property: 'result.token',
-          maxAge: 60 * 60 * 24
-        },
-        user: {
-          property: 'result.user',
-          autoFetch: true
-        },
         endpoints: {
-          login: { url: '/api/login', method: 'post' },
+          login: { url: '/api/login', method: 'post', propertyName: 'result.token' },
           logout: { url: '/api/login/logout', method: 'get' },
-          user: { url: '/api/login/userInfo', method: 'get' }
+          user: { url: '/api/login/userInfo', method: 'get', propertyName: 'result.user' }
         }
       }
     },
-    localStorage: false,
+    localStorage: {
+      prefix: 'auth.'
+    },
     rewriteRedirects: true,
     fullPathRedirect: true,
     resetOnError: true,

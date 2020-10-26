@@ -57,7 +57,7 @@ export default function({ $axios }) {
   })
 
   $axios.onResponse(response => {
-    return response.data
+    return Promise.resolve(response)
   })
 
 }
