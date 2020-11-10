@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <a-breadcrumb style="margin: 16px 0">
+      <a-breadcrumb-item>User</a-breadcrumb-item>
+      <a-breadcrumb-item>Bill</a-breadcrumb-item>
+    </a-breadcrumb>
     Home
     <br>
     <p style="height: 500px;">aaa</p>

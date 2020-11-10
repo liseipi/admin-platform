@@ -108,7 +108,7 @@ export default {
         endpoints: {
           login: { url: '/api/login', method: 'post', propertyName: 'result.token' },
           logout: { url: '/api/login/logout', method: 'get' },
-          user: { url: '/api/login/userInfo', method: 'get', propertyName: 'result.user' }
+          user: { url: '/api/getUserInfo', method: 'get', propertyName: 'result.user' }
         }
       }
     },

@@ -1,3 +1,4 @@
 export const state = () => ({
-  dashboard: '/api/dashboard'
+  dashboard: '/api/dashboard',
+  getAssets: '/api/getAssets'
 })

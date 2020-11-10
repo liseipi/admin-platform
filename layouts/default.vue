@@ -10,11 +10,11 @@
       <a-menu theme="dark" :default-selected-keys="['1']" mode="inline">
         <a-menu-item key="1" @click="$router.push('/')">
           <a-icon type="pie-chart"/>
-          <span>Option 1</span>
+          <span>Dashboard</span>
         </a-menu-item>
         <a-menu-item key="2" @click="$router.push('/about')">
           <a-icon type="desktop"/>
-          <span>Option 2</span>
+          <span>企业资产</span>
         </a-menu-item>
         <a-sub-menu key="sub1">
           <span slot="title"><a-icon type="user"/><span>User</span></span>
@@ -70,10 +70,6 @@
         </div>
       </a-layout-header>
       <a-layout-content id="layout-content">
-        <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>User</a-breadcrumb-item>
-          <a-breadcrumb-item>Bill</a-breadcrumb-item>
-        </a-breadcrumb>
         <div id="page-content">
           <Nuxt/>
         </div>
