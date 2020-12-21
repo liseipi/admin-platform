@@ -21,6 +21,9 @@
           <a-menu-item key="6" @click="$router.push('/users')">
             用户列表
           </a-menu-item>
+          <a-menu-item key="7" @click="$router.push('/users/add')">
+            增加用户
+          </a-menu-item>
         </a-sub-menu>
         <a-menu-item key="9">
           <a-icon type="file"/>
