@@ -37,7 +37,7 @@ export default function({ $axios }) {
       if (err.response.hasOwnProperty('data') && err.response.data.hasOwnProperty('message')) {
         statusText = err.response.data.message
       }
-      if (status === 403) {
+      if (status === 401 || status === 403) {
         notification.error({
           message: '认证失败!',
           description: '当前用户操作权限失败。'

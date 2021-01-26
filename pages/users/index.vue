@@ -94,7 +94,6 @@ export default {
       let result = await this.$axios.$get(this.$store.state.api.getUserAll, {
         params: select
       })
-      console.log(result)
       this.users = result.result.data
     },
     confirmDestroy(id) {
