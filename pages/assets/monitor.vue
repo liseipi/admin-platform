@@ -13,14 +13,8 @@
           <a-select-option value='snID'>
             资产编号
           </a-select-option>
-          <a-select-option value='department'>
-            部门
-          </a-select-option>
-          <a-select-option value='ip_address'>
-            IP地址
-          </a-select-option>
-          <a-select-option value='action'>
-            状态
+          <a-select-option value='model'>
+            型号
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -30,13 +24,13 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button type='primary' icon='search' html-type='submit'>
+        <a-button type='primary' html-type='submit'>
           查找
         </a-button>
       </a-form-item>
       <a-form-item style='float: right;'>
-        <NLink type='primary' :to="{path: '/assets/add'}">
-          <a-button icon='file-add'>增加资产</a-button>
+        <NLink type='primary' :to="{path: '/assets/monitor_add'}">
+          <a-button icon='file-add'>增加显示器</a-button>
         </NLink>
       </a-form-item>
     </a-form>
@@ -45,20 +39,23 @@
       <template slot='name' slot-scope='text, n'>
         {{ n.user_info.name }} - {{ n.user_info.name_en }}
       </template>
+      <template slot='info' slot-scope='text, i'>
+        {{ i.brand }}-({{ i.model }})
+      </template>
       <template slot='position' slot-scope='text, p'>
         {{ p.position_name }}/{{ p.branch_name }}/{{ p.attribution_name }} <br>
-        {{ p.ip_address }}
+        {{ p.department_name }}
       </template>
       <template slot='status' slot-scope='s'>{{ s == 0 ? '正常' : '损坏' }}</template>
 
       <template slot='action' slot-scope='text, a'>
-        <NLink :to='{path: `/assets/details?id=${a.id}`}'>
-          <a-button type='primary'>
-            查看详细
-          </a-button>
-        </NLink>
-        <NLink :to='{path: `/assets/edit?id=${a.id}`}'>
-          <a-button>修改</a-button>
+<!--        <NLink :to='{path: `/assets/details?id=${a.id}`}'>-->
+<!--          <a-button type='primary'>-->
+<!--            查看详细-->
+<!--          </a-button>-->
+<!--        </NLink>-->
+        <NLink :to='{path: `/assets/monitor_edit?id=${a.id}`}'>
+          <a-button type='primary'>查看/修改</a-button>
         </NLink>
       </template>
     </a-table>
@@ -66,7 +63,7 @@
 </template>
 <script>
 export default {
-  name: 'pc-assets',
+  name: 'monitor-assets',
   data() {
     return {
       pagination: {
@@ -85,12 +82,11 @@ export default {
           scopedSlots: { customRender: 'name' }
         },
         {
-          title: '部门',
-          key: 'department_name',
-          dataIndex: 'department_name'
+          title: '品牌/型号',
+          scopedSlots: { customRender: 'info' }
         },
         {
-          title: '位置/IP地址',
+          title: '位置/部门',
           scopedSlots: { customRender: 'position' }
         },
         {
@@ -109,7 +105,7 @@ export default {
     }
   },
   async created() {
-    let { result } = await this.$axios.$get(this.$store.state.api.getAssets, {})
+    let { result } = await this.$axios.$get(this.$store.state.api.getMonitor, {})
     this.assets = result.data
   },
   methods: {
@@ -124,7 +120,7 @@ export default {
     },
     async searchUser(select) {
       // console.log(select)
-      let result = await this.$axios.$get(this.$store.state.api.getAssets, {
+      let result = await this.$axios.$get(this.$store.state.api.getMonitor, {
         params: select
       })
       // console.log(result)

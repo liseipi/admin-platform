@@ -18,16 +18,16 @@
           英文名：{{data.user_info.name_en}}
         </a-list-item>
         <a-list-item>
-          公司：{{data.attribution}}
+          公司：{{data.attribution_name}}
         </a-list-item>
         <a-list-item>
-          城市：{{data.position}}
+          城市：{{data.position_name}}
         </a-list-item>
         <a-list-item>
-          办公室：{{data.branch}}
+          办公室：{{data.branch_name}}
         </a-list-item>
         <a-list-item>
-          部门：{{data.department}}
+          部门：{{data.department_name}}
         </a-list-item>
         <a-list-item>
           IP地址：{{data.ip_address}}

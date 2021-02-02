@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { notification } from 'ant-design-vue'
 
-export default function({ $axios }) {
+export default function({ $axios, redirect }) {
   /*
   ** spa page axios config
   */
@@ -42,6 +42,7 @@ export default function({ $axios }) {
           message: '认证失败!',
           description: '当前用户操作权限失败。'
         })
+        return redirect('/login')
       }
       return Promise.resolve({ status, message: statusText, path: url })
     }

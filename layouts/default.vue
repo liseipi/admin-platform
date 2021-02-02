@@ -15,18 +15,21 @@
         <a-sub-menu key="sub1">
           <span slot="title"><a-icon type="desktop"/><span>资产信息</span></span>
           <a-menu-item key="2" @click="$router.push('/assets')">
-            <span>企业资产</span>
+            <span>主机资产</span>
           </a-menu-item>
-          <a-menu-item key="3" @click="$router.push('/assets/add')">
-            增加资产
+          <a-menu-item key="3" @click="$router.push('/assets/monitor')">
+            显示器
+          </a-menu-item>
+          <a-menu-item key="4" @click="$router.push('/assets/other')">
+            其它资产
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <span slot="title"><a-icon type="team"/><span>用户信息</span></span>
-          <a-menu-item key="6" @click="$router.push('/users')">
+          <a-menu-item key="16" @click="$router.push('/users')">
             用户列表
           </a-menu-item>
-          <a-menu-item key="7" @click="$router.push('/users/add')">
+          <a-menu-item key="17" @click="$router.push('/users/add')">
             增加用户
           </a-menu-item>
         </a-sub-menu>

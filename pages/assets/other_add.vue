@@ -5,7 +5,7 @@
       title="返回"
       @back="$router.back()"
     />
-    <a-divider>增加资产</a-divider>
+    <a-divider>增加其它资产</a-divider>
     <a-form :form='form' @submit='handleSubmit'>
       <a-form-item v-bind='formItemLayout'>
         <span slot='label'>
@@ -68,58 +68,22 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='IP地址'>
-        <a-input v-decorator="['ip_address']" />
+      <a-form-item v-bind='formItemLayout' label='资产名称'>
+        <a-input v-decorator="['sn_name']" />
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='MAC地址'>
-        <a-input v-decorator="['mac_address']" />
+      <a-form-item v-bind='formItemLayout' label='型号'>
+        <a-input v-decorator="['model']" />
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='内存'>
-        <a-input v-decorator="['ram']" />
+      <a-form-item v-bind='formItemLayout' label='详细信息'>
+        <a-input v-decorator="['details']" />
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='CPU信息'>
-        <a-input v-decorator="['cpu_info']" />
-      </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='显卡信息'>
-        <a-input v-decorator="['gpu_info']" />
-      </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='主板信息'>
-        <a-input v-decorator="['motherboard_info']" />
-      </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='硬盘信息'>
-        <a-input v-decorator="['disk']" />
-      </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='其它备注'>
-        <a-input v-decorator="['remarks']" />
-      </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='主机状态'>
+      <a-form-item v-bind='formItemLayout' label='显示状态'>
         <a-switch default-checked checked-children='正常' un-checked-children='损坏'
                   v-decorator="['status', { initialValue: true, valuePropName: '1' }]" />
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='关联显示器'>
-        <a-row :gutter='24'>
-          <a-col :span='16'>
-            <a-select
-              mode="multiple"
-              show-search
-              placeholder="Select a person"
-              option-filter-prop="children"
-              :filter-option="filterOption"
-              v-decorator="['monitor_id']" :loading='status.loadingMonitor'
-            >
-              <a-select-option v-for='(item, index) in monitors' :key='index' :value="item.id">
-                {{item.snID}} - {{item.brand}}
-              </a-select-option>
-            </a-select>
-          </a-col>
-          <a-col :span='8'>
-            <a-button @click='getMonitorAll'>获取显示器</a-button>
-          </a-col>
-        </a-row>
-      </a-form-item>
       <a-form-item v-bind='tailFormItemLayout'>
         <a-button type='primary' html-type='submit'>
-          创建新的主机
+          保存其它资产
         </a-button>
       </a-form-item>
     </a-form>
@@ -129,7 +93,7 @@
 <script>
 const key = 'updatable'
 export default {
-  name: 'assets-add',
+  name: 'other-add',
   data() {
     return {
       path: {},
@@ -187,12 +151,12 @@ export default {
     async sendAdd(data) {
       this.$message.loading({ content: 'Save...', key })
       // console.log(data)
-      let result = await this.$axios.$post(this.$store.state.api.assetsAdd, {
+      let result = await this.$axios.$post(this.$store.state.api.otherAdd, {
         data: data
       })
       if (result.statusCode === 200) {
         this.$message.success({ content: 'OK!', key, duration: 2 })
-        this.$router.push('/assets')
+        this.$router.push('/assets/other')
       } else {
         this.$message.error({ content: 'Fail!', key, duration: 2 })
       }
@@ -203,16 +167,6 @@ export default {
       this.status.loadingUser = false
       if (result.statusCode === 200) {
         this.users = result.result.data
-      } else {
-        this.$message.error('Fail!')
-      }
-    },
-    async getMonitorAll(){
-      this.status.loadingMonitor= true
-      let result = await this.$axios.$get(this.$store.state.api.getMonitor)
-      this.status.loadingMonitor = false
-      if (result.statusCode === 200) {
-        this.monitors = result.result.data
       } else {
         this.$message.error('Fail!')
       }
