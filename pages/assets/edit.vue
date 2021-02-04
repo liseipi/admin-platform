@@ -94,10 +94,25 @@
         <a-input v-decorator="['remarks', { initialValue: details.remarks }]" />
       </a-form-item>
       <a-form-item v-bind='formItemLayout' label='主机状态'>
-        <a-switch checked-children='正常' un-checked-children='损坏'
-                  v-decorator="['status', { initialValue: (details.status === 0), valuePropName: 'checked' }]" />
+        <a-select v-decorator="['status', { initialValue: String(details.status) }]" style="width: 220px">
+          <a-select-option value="0">
+            正常
+          </a-select-option>
+          <a-select-option value="1">
+            损坏
+          </a-select-option>
+          <a-select-option value="2">
+            闲置
+          </a-select-option>
+          <a-select-option value="3">
+            维修中
+          </a-select-option>
+          <a-select-option value="4">
+            变卖
+          </a-select-option>
+        </a-select>
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='关联显示器'>
+      <a-form-item v-bind='formItemLayout' label='关联显示器' extra="温馨提示：添加一个或多个显示器需将原来绑定显示器删除后才可添加">
         <a-row :gutter='24'>
           <a-col :span='16'>
             <a-select
@@ -238,7 +253,7 @@ export default {
     },
     async getMonitorAll() {
       this.status.loadingMonitor = true
-      let result = await this.$axios.$get(this.$store.state.api.getMonitor)
+      let result = await this.$axios.$get(this.$store.state.api.getMonitorNull)
       this.status.loadingMonitor = false
       if (result.statusCode === 200) {
         this.monitors = result.result.data

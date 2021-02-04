@@ -78,8 +78,23 @@
         <a-input v-decorator="['details']" />
       </a-form-item>
       <a-form-item v-bind='formItemLayout' label='显示状态'>
-        <a-switch default-checked checked-children='正常' un-checked-children='损坏'
-                  v-decorator="['status', { initialValue: true, valuePropName: '1' }]" />
+        <a-select v-decorator="['status', { initialValue: '0' }]" style="width: 220px">
+          <a-select-option value="0">
+            正常
+          </a-select-option>
+          <a-select-option value="1">
+            损坏
+          </a-select-option>
+          <a-select-option value="2">
+            闲置
+          </a-select-option>
+          <a-select-option value="3">
+            维修中
+          </a-select-option>
+          <a-select-option value="4">
+            变卖
+          </a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item v-bind='tailFormItemLayout'>
         <a-button type='primary' html-type='submit'>

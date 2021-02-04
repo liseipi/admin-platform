@@ -31,9 +31,9 @@
     <a-divider />
     <a-table bordered :columns='usersColumns' :data-source='users' rowKey='id' :pagination='pagination'>
       <template slot='action' slot-scope='text, a'>
-        <NLink :to='{path: `/assets/details?id=${a.id}`}'>查看主机</NLink>
-        |
-        <NLink :to='{path: `/assets/details?id=${a.id}`}'>查看显示器</NLink>
+        <NLink :to='{path: `/users/assets?id=${a.id}`}'>
+          <a-button type='primary'>查看资产</a-button>
+        </NLink>
         |
         <a-button type='danger' @click='confirmDestroy(a.id)'>
           删除用户

@@ -7,6 +7,7 @@ export const state = () => ({
   assetsUpdate: '/api/assets/update/:id',
 
   getMonitor: '/api/monitor/getAll',
+  getMonitorNull: '/api/monitor/getAllNull',
   monitorAdd: '/api/monitor/add',
   getMonitorDetails: '/api/monitor/details/:id',
   monitorUpdate: '/api/monitor/update/:id',
@@ -19,6 +20,7 @@ export const state = () => ({
   getUserAll: '/api/user/getAll',
   postAddUser: '/api/user/add',
   getDestroyUser: '/api/user/destroy/:id',
+  getUserAssets: '/api/user/assets/:id',
 
   getPath: '/api/getPath'
 })
