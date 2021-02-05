@@ -22,5 +22,9 @@ export const state = () => ({
   getDestroyUser: '/api/user/destroy/:id',
   getUserAssets: '/api/user/assets/:id',
 
+  getQrcodeDesktop: '/api/qrcode/desktop/:id',
+  getQrcodeMonitor: '/api/qrcode/monitor/:id',
+  getQrcodeOther: '/api/qrcode/other/:id',
+
   getPath: '/api/getPath'
 })

@@ -4,17 +4,39 @@
       <a-form-item label='条件'>
         <a-select
           style='width: 10em;'
-          v-decorator="[
-          'select',
-          { rules: [{ required: true, message: 'Please select your select!' }], initialValue: 'snID' },
-        ]"
+          v-decorator="['select', { rules: [{ required: true, message: 'Please select your select!' }], initialValue: 'snID' }]"
           placeholder='选择查找的字段'
         >
           <a-select-option value='snID'>
             资产编号
           </a-select-option>
           <a-select-option value='sn_name'>
-            资产名称
+            名称
+          </a-select-option>
+          <a-select-option value='model'>
+            型号
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label='状态'>
+        <a-select style='width: 10em;' v-decorator="['status',{ rules: [], initialValue: '-1' }]">
+          <a-select-option value='-1'>
+            全部
+          </a-select-option>
+          <a-select-option value="0">
+            正常
+          </a-select-option>
+          <a-select-option value="1">
+            损坏
+          </a-select-option>
+          <a-select-option value="2">
+            闲置
+          </a-select-option>
+          <a-select-option value="3">
+            维修中
+          </a-select-option>
+          <a-select-option value="4">
+            变卖
           </a-select-option>
         </a-select>
       </a-form-item>

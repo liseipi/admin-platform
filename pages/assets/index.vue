@@ -19,8 +19,30 @@
           <a-select-option value='ip_address'>
             IP地址
           </a-select-option>
-          <a-select-option value='action'>
-            状态
+          <a-select-option value='mac_address'>
+            物理地址
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label='状态'>
+        <a-select style='width: 10em;' v-decorator="['status',{ rules: [], initialValue: '-1' }]">
+          <a-select-option value='-1'>
+            全部
+          </a-select-option>
+          <a-select-option value="0">
+            正常
+          </a-select-option>
+          <a-select-option value="1">
+            损坏
+          </a-select-option>
+          <a-select-option value="2">
+            闲置
+          </a-select-option>
+          <a-select-option value="3">
+            维修中
+          </a-select-option>
+          <a-select-option value="4">
+            变卖
           </a-select-option>
         </a-select>
       </a-form-item>

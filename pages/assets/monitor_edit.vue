@@ -5,6 +5,9 @@
       title='返回'
       @back='$router.back()'
     />
+    <div style='text-align:right;'>
+      <a :href='qrcode_uri' target='_blank'><img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd;' /></a>
+    </div>
     <a-divider>资产修改</a-divider>
     <a-form :form='form' @submit='handleSubmit'>
       <a-form-item v-bind='formItemLayout'>
@@ -78,7 +81,7 @@
       <a-form-item v-bind='formItemLayout' label='详细信息'>
         <a-input v-decorator="['details', { initialValue: details.details }]" />
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='主机状态'>
+      <a-form-item v-bind='formItemLayout' label='显示器状态'>
         <a-select v-decorator="['status', { initialValue: String(details.status) }]" style="width: 220px">
           <a-select-option value="0">
             正常
@@ -107,11 +110,15 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 const key = 'updatable'
+
 export default {
   name: 'monitor-edit',
   data() {
     return {
+      qrcode: null,
+      qrcode_uri: '',
       path: {},
       formItemLayout: {
         labelCol: {
@@ -144,13 +151,15 @@ export default {
       details: {}
     }
   },
-  async beforeCreate() {
+  async created() {
+    let { id } = this.$route.query
+    this.qrcode_uri = `${process.env.BASE_URL}/qrcode/monitor?id=${id}`
+
     this.form = this.$form.createForm(this, { name: 'register' })
 
     let { result } = await this.$axios.$get(this.$store.state.api.getPath)
     this.path = result
 
-    let { id } = this.$route.query
     let details = await this.$axios.$get(this.$store.state.api.getMonitorDetails, { params: { id } })
     this.details = details.result.data[0]
     this.users.push({
@@ -212,7 +221,19 @@ export default {
       } else {
         this.$message.error('Fail!')
       }
+    },
+    generateQrcode() {
+      QRCode.toDataURL(this.qrcode_uri, {
+        margin: 1,
+        width: 500,
+        height: 500
+      }, (err, url) => {
+        this.qrcode = url
+      })
     }
+  },
+  mounted() {
+    this.generateQrcode()
   }
 }
 </script>

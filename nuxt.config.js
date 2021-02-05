@@ -3,11 +3,12 @@ export default {
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
   */
-  mode: 'spa',
+  ssr: false,
   /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
   */
+  env: { ...process.env },
   target: 'server',
   server: {
     host: process.env.HOST,
@@ -82,7 +83,7 @@ export default {
   proxy: {
     '/api': {
       changeOrigin: true,
-      target: process.env.API_URL,
+      target: process.env.API_URL
       // pathRewrite: {
       //   '^/api': '/v0'
       // }
@@ -151,6 +152,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-    extractCSS: true
+    extractCSS: true,
+    cssSourceMap: false
   }
 }

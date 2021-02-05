@@ -15,7 +15,8 @@
     "@nuxtjs/universal-storage": "^0.5.5",
     "ant-design-vue": "^1.6.4",
     "cookie-universal-nuxt": "^2.1.4",
-    "nuxt": "^2.14.5"
+    "nuxt": "^2.14.5",
+    "qrcode": "^1.4.4"
   },
   "devDependencies": {}
 }
