@@ -64,7 +64,7 @@ export default {
   async created() {
     let { id } = this.$route.query
 
-    let { result } = await this.$axios.$get(this.$store.state.api.getQrcodeMonitor, { params: { id } })
+    let { result } = await this.$axios.$get(this.$store.state.api.getQrcodeDesktop, { params: { id } })
     this.data = result.data[0]
   }
 }

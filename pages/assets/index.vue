@@ -13,9 +13,6 @@
           <a-select-option value='snID'>
             资产编号
           </a-select-option>
-          <a-select-option value='department'>
-            部门
-          </a-select-option>
           <a-select-option value='ip_address'>
             IP地址
           </a-select-option>
