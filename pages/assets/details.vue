@@ -5,8 +5,12 @@
       title='返回'
       @back='$router.back()'
     />
-    <div style='text-align:right;'>
-      <a :href='qrcode_uri' target='_blank'><img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd;' /></a>
+    <div style='display:flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;'>
+      <a :href='qrcode_uri' target='_blank'><img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd; display: none;' /></a>
+      <img :src='canvasImg' alt='tag' v-show='canvasImg'>
+      <a-button type="primary" icon="printer" @click='generateTag'>
+        生成打印标签
+      </a-button>
     </div>
     <a-divider v-if='data'>资产详细</a-divider>
     <div style='max-width: 800px; margin: 0 auto;' v-if='data'>
@@ -49,7 +53,7 @@
           英文名：{{ data.user_info.name_en }}
         </a-list-item>
         <a-divider>显示器</a-divider>
-        <a-table :columns='columns' :data-source='data.monitor_info' :pagination='false'>
+        <a-table :columns='columns' :data-source='data.monitor_info' :pagination='false' rowKey='snID'>
           <a slot='name' slot-scope='text'>{{ text }}</a>
         </a-table>
       </a-list>
@@ -59,13 +63,15 @@
 
 <script>
 import QRCode from 'qrcode'
+const { registerFont, createCanvas, loadImage } = require('canvas')
 
 export default {
-  name: 'details',
+  name: 'desktop-details',
   data() {
     return {
       qrcode: null,
       qrcode_uri: '',
+      canvasImg: '',
       data: null,
       columns: [
         {
@@ -102,6 +108,60 @@ export default {
       }, (err, url) => {
         this.qrcode = url
       })
+    },
+    async generateTag(){
+      const canvas = createCanvas(640, 270)
+      const ctx = canvas.getContext('2d')
+
+      ctx.fillStyle = "#fff"
+      ctx.fillRect(0,0, 640, 270)
+      ctx.fillStyle = "#000"
+
+      let Point = function(x, y) {
+        return {x:x, y:y};
+      };
+
+      function Rect(x, y, w, h) {
+        return {x:x, y:y, width:w, height:h};
+      }
+
+      let rect = Rect(5, 5, 630, 260);
+
+      drawRoundedRect(rect, 25, ctx);
+
+      function drawRoundedRect(rect, r, ctx) {
+        let ptA = Point(rect.x + r, rect.y);
+        let ptB = Point(rect.x + rect.width, rect.y);
+        let ptC = Point(rect.x + rect.width, rect.y + rect.height);
+        let ptD = Point(rect.x, rect.y + rect.height);
+        let ptE = Point(rect.x, rect.y);
+
+        ctx.beginPath();
+
+        ctx.moveTo(ptA.x, ptA.y);
+        ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, r);
+        ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, r);
+        ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, r);
+        ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, r);
+
+        ctx.stroke();
+      }
+
+      const img = new Image()
+      img.src = this.qrcode
+      ctx.drawImage(img, 45, 45, 170, 170)
+
+      ctx.font = '38px Impact'
+      ctx.fillText('杰钡利', 250, 100)
+
+      await loadImage('../image/logo.jpg').then((image) => {
+        ctx.drawImage(image, 400, 45, 200, 82)
+      })
+
+      ctx.font = '24px "Comic Sans"'
+      ctx.fillText(`资产编号：${this.data.snID}`, 250, 180)
+
+      this.canvasImg = canvas.toDataURL();
     }
   },
   mounted() {
