@@ -14,8 +14,10 @@
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/universal-storage": "^0.5.5",
     "ant-design-vue": "^1.6.4",
+    "canvas": "^2.6.1",
     "cookie-universal-nuxt": "^2.1.4",
     "nuxt": "^2.14.5",
+    "print-js": "^1.5.0",
     "qrcode": "^1.4.4"
   },
   "devDependencies": {}

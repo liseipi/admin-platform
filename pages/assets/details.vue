@@ -4,13 +4,21 @@
       style='border: 1px solid rgb(235, 237, 240)'
       title='返回'
       @back='$router.back()'
-    />
+    >
+      <template slot="extra">
+        <a-button key="2" v-show='!canvasImg' type='primary' @click='generateTag'>
+          生成标签
+        </a-button>
+        <a-button key="1" v-show='canvasImg' icon='printer' @click='print'>
+          打印标签
+        </a-button>
+      </template>
+    </a-page-header>
     <div style='display:flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;'>
-      <a :href='qrcode_uri' target='_blank'><img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd; display: none;' /></a>
+      <a :href='qrcode_uri' target='_blank'>
+        <img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd; display: none;' />
+      </a>
       <img :src='canvasImg' alt='tag' v-show='canvasImg'>
-      <a-button type="primary" icon="printer" @click='generateTag'>
-        生成打印标签
-      </a-button>
     </div>
     <a-divider v-if='data'>资产详细</a-divider>
     <div style='max-width: 800px; margin: 0 auto;' v-if='data'>
@@ -63,7 +71,8 @@
 
 <script>
 import QRCode from 'qrcode'
-const { registerFont, createCanvas, loadImage } = require('canvas')
+import printJS from 'print-js'
+const { createCanvas, loadImage } = require('canvas')
 
 export default {
   name: 'desktop-details',
@@ -109,42 +118,42 @@ export default {
         this.qrcode = url
       })
     },
-    async generateTag(){
+    async generateTag() {
       const canvas = createCanvas(640, 270)
       const ctx = canvas.getContext('2d')
 
-      ctx.fillStyle = "#fff"
-      ctx.fillRect(0,0, 640, 270)
-      ctx.fillStyle = "#000"
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, 640, 270)
+      ctx.fillStyle = '#000'
 
       let Point = function(x, y) {
-        return {x:x, y:y};
-      };
-
-      function Rect(x, y, w, h) {
-        return {x:x, y:y, width:w, height:h};
+        return { x: x, y: y }
       }
 
-      let rect = Rect(5, 5, 630, 260);
+      function Rect(x, y, w, h) {
+        return { x: x, y: y, width: w, height: h }
+      }
 
-      drawRoundedRect(rect, 25, ctx);
+      let rect = Rect(5, 5, 630, 260)
+
+      drawRoundedRect(rect, 25, ctx)
 
       function drawRoundedRect(rect, r, ctx) {
-        let ptA = Point(rect.x + r, rect.y);
-        let ptB = Point(rect.x + rect.width, rect.y);
-        let ptC = Point(rect.x + rect.width, rect.y + rect.height);
-        let ptD = Point(rect.x, rect.y + rect.height);
-        let ptE = Point(rect.x, rect.y);
+        let ptA = Point(rect.x + r, rect.y)
+        let ptB = Point(rect.x + rect.width, rect.y)
+        let ptC = Point(rect.x + rect.width, rect.y + rect.height)
+        let ptD = Point(rect.x, rect.y + rect.height)
+        let ptE = Point(rect.x, rect.y)
 
-        ctx.beginPath();
+        ctx.beginPath()
 
-        ctx.moveTo(ptA.x, ptA.y);
-        ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, r);
-        ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, r);
-        ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, r);
-        ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, r);
+        ctx.moveTo(ptA.x, ptA.y)
+        ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, r)
+        ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, r)
+        ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, r)
+        ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, r)
 
-        ctx.stroke();
+        ctx.stroke()
       }
 
       const img = new Image()
@@ -161,7 +170,10 @@ export default {
       ctx.font = '24px "Comic Sans"'
       ctx.fillText(`资产编号：${this.data.snID}`, 250, 180)
 
-      this.canvasImg = canvas.toDataURL();
+      this.canvasImg = canvas.toDataURL()
+    },
+    print() {
+      printJS(this.canvasImg, 'image')
     }
   },
   mounted() {
