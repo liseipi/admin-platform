@@ -119,11 +119,11 @@ export default {
       })
     },
     async generateTag() {
-      const canvas = createCanvas(640, 270)
+      const canvas = createCanvas(794, 340)
       const ctx = canvas.getContext('2d')
 
       ctx.fillStyle = '#fff'
-      ctx.fillRect(0, 0, 640, 270)
+      ctx.fillRect(0, 0, 794, 340)
       ctx.fillStyle = '#000'
 
       let Point = function(x, y) {
@@ -134,7 +134,7 @@ export default {
         return { x: x, y: y, width: w, height: h }
       }
 
-      let rect = Rect(5, 5, 630, 260)
+      let rect = Rect(10, 10, 774, 320)
 
       drawRoundedRect(rect, 25, ctx)
 
@@ -158,17 +158,20 @@ export default {
 
       const img = new Image()
       img.src = this.qrcode
-      ctx.drawImage(img, 45, 45, 170, 170)
+      ctx.drawImage(img, 40, 50, 227, 237)
 
-      ctx.font = '38px Impact'
-      ctx.fillText('杰钡利', 250, 100)
+      ctx.font = '40px Impact'
+      ctx.fillText(`${this.data.attribution_name}`, 300, 120)
 
       await loadImage('../image/logo.jpg').then((image) => {
-        ctx.drawImage(image, 400, 45, 200, 82)
+        ctx.drawImage(image, 450, 50, 300, 122)
       })
 
       ctx.font = '24px "Comic Sans"'
-      ctx.fillText(`资产编号：${this.data.snID}`, 250, 180)
+      ctx.fillText(`部门：${this.data.department_name}`, 300, 200)
+
+      ctx.font = '24px "Comic Sans"'
+      ctx.fillText(`资产编号：${this.data.snID}`, 300, 260)
 
       this.canvasImg = canvas.toDataURL()
     },

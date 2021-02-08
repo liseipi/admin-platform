@@ -4,9 +4,21 @@
       style='border: 1px solid rgb(235, 237, 240)'
       title='返回'
       @back='$router.back()'
-    />
-    <div style='text-align:right;'>
-      <a :href='qrcode_uri' target='_blank'><img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd;' /></a>
+    >
+      <template slot="extra">
+        <a-button key="2" v-show='!canvasImg' type='primary' @click='generateTag'>
+          生成标签
+        </a-button>
+        <a-button key="1" v-show='canvasImg' icon='printer' @click='print'>
+          打印标签
+        </a-button>
+      </template>
+    </a-page-header>
+    <div style='display:flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;'>
+      <a :href='qrcode_uri' target='_blank'>
+        <img :src='qrcode' style='width: 100px; margin-top: 5px; padding: 5px; border:1px solid #ddd; display: none;' />
+      </a>
+      <img :src='canvasImg' alt='tag' v-show='canvasImg'>
     </div>
     <a-divider>资产修改</a-divider>
     <a-form :form='form' @submit='handleSubmit'>
@@ -111,6 +123,8 @@
 
 <script>
 import QRCode from 'qrcode'
+import printJS from 'print-js'
+const { createCanvas, loadImage } = require('canvas')
 const key = 'updatable'
 
 export default {
@@ -119,6 +133,7 @@ export default {
     return {
       qrcode: null,
       qrcode_uri: '',
+      canvasImg: '',
       path: {},
       formItemLayout: {
         labelCol: {
@@ -195,9 +210,9 @@ export default {
     },
     async sendUpdate(data) {
       let { id } = this.$route.query
-      console.log(data)
+      // console.log(data)
       this.$message.loading({ content: 'Save...', key })
-      console.log(data)
+      // console.log(data)
       let result = await this.$axios.$post(this.$store.state.api.monitorUpdate, {
         data: data
       }, {
@@ -230,6 +245,66 @@ export default {
       }, (err, url) => {
         this.qrcode = url
       })
+    },
+    async generateTag() {
+      const canvas = createCanvas(794, 340)
+      const ctx = canvas.getContext('2d')
+
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, 794, 340)
+      ctx.fillStyle = '#000'
+
+      let Point = function(x, y) {
+        return { x: x, y: y }
+      }
+
+      function Rect(x, y, w, h) {
+        return { x: x, y: y, width: w, height: h }
+      }
+
+      let rect = Rect(10, 10, 774, 320)
+
+      drawRoundedRect(rect, 25, ctx)
+
+      function drawRoundedRect(rect, r, ctx) {
+        let ptA = Point(rect.x + r, rect.y)
+        let ptB = Point(rect.x + rect.width, rect.y)
+        let ptC = Point(rect.x + rect.width, rect.y + rect.height)
+        let ptD = Point(rect.x, rect.y + rect.height)
+        let ptE = Point(rect.x, rect.y)
+
+        ctx.beginPath()
+
+        ctx.moveTo(ptA.x, ptA.y)
+        ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, r)
+        ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, r)
+        ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, r)
+        ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, r)
+
+        ctx.stroke()
+      }
+
+      const img = new Image()
+      img.src = this.qrcode
+      ctx.drawImage(img, 40, 50, 227, 237)
+
+      ctx.font = '40px Impact'
+      ctx.fillText(`${this.details.attribution_name}`, 300, 120)
+
+      await loadImage('../image/logo.jpg').then((image) => {
+        ctx.drawImage(image, 450, 50, 300, 122)
+      })
+
+      ctx.font = '24px "Comic Sans"'
+      ctx.fillText(`部门：${this.details.department_name}`, 300, 200)
+
+      ctx.font = '24px "Comic Sans"'
+      ctx.fillText(`资产编号：${this.details.snID}`, 300, 260)
+
+      this.canvasImg = canvas.toDataURL()
+    },
+    print() {
+      printJS(this.canvasImg, 'image')
     }
   },
   mounted() {

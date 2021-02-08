@@ -60,13 +60,16 @@
       </a-form-item>
     </a-form>
     <a-divider />
-    <a-table bordered :columns='assetsColumns' :data-source='assets' rowKey='id' :pagination='pagination'>
+    <a-table bordered :columns='assetsColumns' :data-source='assets' rowKey='id' :pagination='pagination' :scroll="{ x: '100%' }">
       <template slot='name' slot-scope='text, n'>
         {{ n.user_info.name }} - {{ n.user_info.name_en }}
       </template>
+      <template slot='ip_info' slot-scope='text, p'>
+        {{ p.ip_address }} <br>
+        {{ p.mac_address }}
+      </template>
       <template slot='position' slot-scope='text, p'>
-        {{ p.position_name }}/{{ p.branch_name }}/{{ p.attribution_name }} <br>
-        {{ p.ip_address }}
+        {{ p.position_name }}/{{ p.branch_name }}/{{ p.attribution_name }}
       </template>
       <template slot='status' slot-scope='s'>{{ s == 0 ? '正常' : '损坏' }}</template>
 
@@ -99,6 +102,25 @@ export default {
           dataIndex: 'snID'
         },
         {
+          title: 'CPU',
+          key: 'cpu_info',
+          dataIndex: 'cpu_info'
+        },
+        {
+          title: '硬盘',
+          key: 'disk',
+          dataIndex: 'disk'
+        },
+        {
+          title: '内存',
+          key: 'ram',
+          dataIndex: 'ram'
+        },
+        {
+          title: 'IP/物理地址',
+          scopedSlots: { customRender: 'ip_info' }
+        },
+        {
           title: '用户',
           key: 'name',
           scopedSlots: { customRender: 'name' }
@@ -109,7 +131,7 @@ export default {
           dataIndex: 'department_name'
         },
         {
-          title: '位置/IP地址',
+          title: '位置',
           scopedSlots: { customRender: 'position' }
         },
         {
