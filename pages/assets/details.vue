@@ -160,18 +160,19 @@ export default {
       img.src = this.qrcode
       ctx.drawImage(img, 40, 50, 227, 237)
 
-      ctx.font = '40px Impact'
-      ctx.fillText(`${this.data.attribution_name}`, 300, 120)
+      // ctx.font = '40px Impact'
+      ctx.font = 'normal bold 46px Arial,sans-serif'
+      ctx.fillText(`${this.data.attribution_name}`, 290, 120)
 
       await loadImage('../image/logo.jpg').then((image) => {
         ctx.drawImage(image, 450, 50, 300, 122)
       })
 
-      ctx.font = '24px "Comic Sans"'
-      ctx.fillText(`部门：${this.data.department_name}`, 300, 200)
+      ctx.font = 'normal bold 34px Arial,sans-serif'
+      ctx.fillText(`部门：${this.data.department_name}`, 290, 200)
 
-      ctx.font = '24px "Comic Sans"'
-      ctx.fillText(`资产编号：${this.data.snID}`, 300, 260)
+      ctx.font = 'normal bold 34px Arial,sans-serif'
+      ctx.fillText(`资产编号：${this.data.snID}`, 290, 260)
 
       this.canvasImg = canvas.toDataURL()
     },
