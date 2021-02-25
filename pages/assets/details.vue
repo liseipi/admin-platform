@@ -51,6 +51,12 @@
           CPU：{{ data.cpu_info }}
         </a-list-item>
         <a-list-item>
+          显卡：{{ data.motherboard_info }}
+        </a-list-item>
+        <a-list-item>
+          主板：{{ data.cpu_info }}
+        </a-list-item>
+        <a-list-item>
           硬盘：{{ data.disk }}
         </a-list-item>
         <a-divider>资产使用者</a-divider>

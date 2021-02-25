@@ -26,19 +26,19 @@
           <a-select-option value='-1'>
             全部
           </a-select-option>
-          <a-select-option value="0">
+          <a-select-option value='0'>
             正常
           </a-select-option>
-          <a-select-option value="1">
+          <a-select-option value='1'>
             损坏
           </a-select-option>
-          <a-select-option value="2">
+          <a-select-option value='2'>
             闲置
           </a-select-option>
-          <a-select-option value="3">
+          <a-select-option value='3'>
             维修中
           </a-select-option>
-          <a-select-option value="4">
+          <a-select-option value='4'>
             变卖
           </a-select-option>
         </a-select>
@@ -60,7 +60,8 @@
       </a-form-item>
     </a-form>
     <a-divider />
-    <a-table bordered :columns='assetsColumns' :data-source='assets' rowKey='id' :pagination='pagination' :scroll="{ x: '100%' }">
+    <a-table bordered :columns='assetsColumns' :data-source='assets' rowKey='id' :pagination='pagination'
+             :scroll="{ x: '100%' }" :row-selection='{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }' @change='changePage'>
       <template slot='name' slot-scope='text, n'>
         {{ n.user_info.name }} - {{ n.user_info.name_en }}
       </template>
@@ -84,13 +85,23 @@
         </NLink>
       </template>
     </a-table>
+    <div v-show='selectedRowKeys.length>0' style='text-align:center;'>
+      <a-button type='primary' @click='generatePDF' :loading='genLoading'>
+        导出选中项到PDF文件
+      </a-button>
+    </div>
   </section>
 </template>
 <script>
+import { jsPDF } from 'jspdf'
+import QRCode from 'qrcode'
+import simhei from '@/plugins/simhei-normal'
+
 export default {
   name: 'pc-assets',
   data() {
     return {
+      currentPage: 1,
       pagination: {
         defaultPageSize: 20
       },
@@ -146,14 +157,33 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
+      selectedRowKeys: [],
+      selectedRows: [],
+      genLoading: false,
       form: this.$form.createForm(this, { name: 'coordinated' })
     }
   },
   async created() {
+    this.$message.loading({
+      content: 'Loading..',
+      duration: 0
+    })
     let { result } = await this.$axios.$get(this.$store.state.api.getAssets, {})
     this.assets = result.data
+    this.$message.destroy()
   },
   methods: {
+    onSelectChange(selectedRowKeys, selectedRows) {
+      // console.log('selectedRowKeys changed: ', selectedRowKeys);
+      // console.log('selectedRows changed: ', selectedRows);
+      this.selectedRowKeys = selectedRowKeys;
+      this.selectedRows = selectedRows;
+    },
+    changePage(page) {
+      this.currentPage = page.current
+      this.selectedRowKeys = []
+      this.selectedRows = []
+    },
     handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
@@ -170,6 +200,62 @@ export default {
       })
       // console.log(result)
       this.assets = result.result.data
+    },
+    async generateQrcode(id) {
+      let qrcode_uri = `${process.env.BASE_URL}/qrcode/desktop?id=${id}`
+      return new Promise((resolve, reject) => {
+        QRCode.toDataURL(qrcode_uri, {
+          margin: 1,
+          width: 500,
+          height: 500
+        }, (err, url) => {
+          resolve(url)
+        })
+      })
+    },
+    async generatePDF() {
+      this.genLoading = true
+      setTimeout(async () => {
+        const doc = new jsPDF({
+          orientation: 'l',
+          unit: 'px',
+          format: [794, 340]
+        })
+
+        // 画线圈
+        doc.setLineWidth(1.5)
+        doc.setLineDash([4, 4, 12, 3, 2, 2, 12, 3, 4, 3, 12, 4])
+        doc.setDrawColor(0)
+        doc.setFillColor(255, 255, 255)
+        doc.roundedRect(10, 10, 774, 320, 3, 3, 'FD')
+
+        let generateContent = async (item) => {
+          let qrcode = await this.generateQrcode(item.id)
+          doc.addImage(qrcode, 'JPEG', 25, 45, 240, 240)
+
+          doc.setFont('simhei')
+          doc.setFontSize(50)
+          doc.text(item.attribution_name, 300, 100)
+
+          doc.addImage('/image/logo.jpg', 'JPEG', 450, 50, 300, 122)
+
+          doc.setFontSize(40)
+          doc.text(`部门：${item.department_name}`, 300, 200)
+
+          doc.text(`资产编号：${item.snID}`, 300, 250)
+        }
+        await generateContent(this.selectedRows[0])
+
+        if (this.selectedRows.length > 1) {
+          for (let i = 1; i < this.selectedRows.length; i++) {
+            doc.addPage([794, 340], 'l')
+            await generateContent(this.selectedRows[i])
+          }
+        }
+
+        doc.save(`desktop_page_${this.currentPage}.pdf`)
+        this.genLoading = false
+      }, 800)
     }
   }
 }

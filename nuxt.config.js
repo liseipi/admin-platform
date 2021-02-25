@@ -143,8 +143,7 @@ export default {
       }
     },
     initialState: {
-      // cartNumber: 0,
-      postcode: 2000
+      // cartNumber: 0
     }
   },
   /*
@@ -153,6 +152,35 @@ export default {
   */
   build: {
     extractCSS: true,
-    cssSourceMap: false
+    cssSourceMap: false,
+    analyze: true,
+    optimization: {
+      moduleIds: 'named',
+      chunkIds: 'named',
+      runtimeChunk: {
+        name: entrypoint => `runtime_${entrypoint.name}`
+      },
+      splitChunks: {
+        chunks: 'all',
+        name: true,
+        automaticNameDelimiter: '.',
+        minChunks: 1,
+        maxInitialRequests: 3,
+        maxAsyncRequests: 5,
+        minSize: 30000,
+        // maxSize: 10240 * 25,
+        cacheGroups: {
+          vendors: {
+            priority: -10,
+            test: /[\\/]node_modules[\\/]/,
+            reuseExistingChunk: true
+          },
+          default: {
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      }
+    }
   }
 }
