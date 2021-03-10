@@ -35,6 +35,10 @@
           <a-button type='primary'>查看资产</a-button>
         </NLink>
         |
+        <NLink :to='{path: `/users/edit?id=${a.id}`}'>
+          <a-button type='primary'>修改用户</a-button>
+        </NLink>
+        |
         <a-button type='danger' @click='confirmDestroy(a.id)'>
           删除用户
         </a-button>

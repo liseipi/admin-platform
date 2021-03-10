@@ -21,6 +21,8 @@ export const state = () => ({
   postAddUser: '/api/user/add',
   getDestroyUser: '/api/user/destroy/:id',
   getUserAssets: '/api/user/assets/:id',
+  getFindOne: '/api/user/findOne/:id',
+  updateUser: '/api/user/edit/:id',
 
   getQrcodeDesktop: '/api/qrcode/desktop/:id',
   getQrcodeMonitor: '/api/qrcode/monitor/:id',
