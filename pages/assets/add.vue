@@ -207,6 +207,7 @@ export default {
       let result = await this.$axios.$post(this.$store.state.api.assetsAdd, {
         data: data
       })
+      console.log(result)
       if (result.statusCode === 200) {
         this.$message.success({ content: 'OK!', key, duration: 2 })
         this.$router.push('/assets')
