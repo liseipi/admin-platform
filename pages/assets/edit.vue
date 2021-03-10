@@ -112,29 +112,29 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind='formItemLayout' label='关联显示器' extra="温馨提示：添加一个或多个显示器需将原来绑定显示器删除后才可添加">
-        <a-row :gutter='24'>
-          <a-col :span='16'>
-            <a-select
-              mode='multiple'
-              show-search
-              placeholder='Select a person'
-              option-filter-prop='children'
-              :filter-option='filterOption'
-              v-decorator="['monitor_id', {initialValue: details.monitor_info && details.monitor_info.length>0?details.monitor_info.map(item => item.id):[]}]"
-              :loading='status.loadingMonitor'
-            >
-              <a-select-option v-for='(item, index) in monitors' :key='index'
-                               :value='item.id'>
-                {{ item.snID }} - {{ item.brand }}
-              </a-select-option>
-            </a-select>
-          </a-col>
-          <a-col :span='8'>
-            <a-button @click='getMonitorAll'>获取显示器</a-button>
-          </a-col>
-        </a-row>
-      </a-form-item>
+<!--      <a-form-item v-bind='formItemLayout' label='关联显示器' extra="温馨提示：添加一个或多个显示器需将原来绑定显示器删除后才可添加">-->
+<!--        <a-row :gutter='24'>-->
+<!--          <a-col :span='16'>-->
+<!--            <a-select-->
+<!--              mode='multiple'-->
+<!--              show-search-->
+<!--              placeholder='Select a person'-->
+<!--              option-filter-prop='children'-->
+<!--              :filter-option='filterOption'-->
+<!--              v-decorator="['monitor_id', {initialValue: details.monitor_info && details.monitor_info.length>0?details.monitor_info.map(item => item.id):[]}]"-->
+<!--              :loading='status.loadingMonitor'-->
+<!--            >-->
+<!--              <a-select-option v-for='(item, index) in monitors' :key='index'-->
+<!--                               :value='item.id'>-->
+<!--                {{ item.snID }} - {{ item.brand }}-->
+<!--              </a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-col>-->
+<!--          <a-col :span='8'>-->
+<!--            <a-button @click='getMonitorAll'>获取显示器</a-button>-->
+<!--          </a-col>-->
+<!--        </a-row>-->
+<!--      </a-form-item>-->
       <a-form-item v-bind='tailFormItemLayout'>
         <a-button type='primary' html-type='submit'>
           修改主机

@@ -5,7 +5,7 @@
       title="返回"
       @back="$router.back()"
     />
-    <a-divider v-if="data">资产详细</a-divider>
+    <a-divider v-if="data">用户信息</a-divider>
     <div v-if="data">
       <a-list>
         <a-list-item>
@@ -27,7 +27,7 @@
           部门：{{data.department_name}}
         </a-list-item>
 
-        <a-divider>主机</a-divider>
+        <a-divider>关联主机</a-divider>
         <a-table :columns="desktopColumns" :data-source="data.desktop_info" :pagination="false" rowKey='snID'>
           <template slot="assetsInfo" slot-scope="text">
             IP地址：{{text.ip_address}} <br>
@@ -37,9 +37,9 @@
             硬盘：{{text.disk}}
           </template>
         </a-table>
-        <a-divider>显示器</a-divider>
+        <a-divider>关联显示器</a-divider>
         <a-table :columns="columns" :data-source="data.monitor_info" :pagination="false" rowKey='snID'></a-table>
-        <a-divider>其它资产</a-divider>
+        <a-divider>关联其它资产</a-divider>
         <a-table :columns="otherColumns" :data-source="data.other_info" :pagination="false" rowKey='snID'>
         </a-table>
       </a-list>

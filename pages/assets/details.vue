@@ -66,10 +66,10 @@
         <a-list-item>
           英文名：{{ data.user_info.name_en }}
         </a-list-item>
-        <a-divider>显示器</a-divider>
-        <a-table :columns='columns' :data-source='data.monitor_info' :pagination='false' rowKey='snID'>
-          <a slot='name' slot-scope='text'>{{ text }}</a>
-        </a-table>
+<!--        <a-divider>显示器</a-divider>-->
+<!--        <a-table :columns='columns' :data-source='data.monitor_info' :pagination='false' rowKey='snID'>-->
+<!--          <a slot='name' slot-scope='text'>{{ text }}</a>-->
+<!--        </a-table>-->
       </a-list>
     </div>
   </section>

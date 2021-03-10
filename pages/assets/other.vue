@@ -69,7 +69,7 @@
         {{ p.position_name }}/{{ p.branch_name }}/{{ p.attribution_name }} <br>
         {{ p.department_name }}
       </template>
-      <template slot='status' slot-scope='s'>{{ s == 0 ? '正常' : '损坏' }}</template>
+      <template slot='status' slot-scope='s'>{{ deviceStatus(s) }}</template>
 
       <template slot='action' slot-scope='text, a'>
         <NLink :to='{path: `/assets/other_edit?id=${a.id}`}'>
@@ -228,6 +228,29 @@ export default {
         doc.save(`other_page_${this.currentPage}.pdf`)
         this.genLoading = false
       }, 800)
+    },
+    deviceStatus(s) {
+      let status = ''
+      switch (parseInt(s)) {
+        case 0:
+          status = '正常'
+          break;
+        case 1:
+          status = '损坏'
+          break;
+        case 2:
+          status = '闲置'
+          break;
+        case 3:
+          status = '维修中'
+          break;
+        case 4:
+          status = '变卖'
+          break;
+        default:
+          status = '-'
+      }
+      return status
     }
   }
 }
