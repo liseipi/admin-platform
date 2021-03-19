@@ -36,6 +36,12 @@
           ]"
         />
       </a-form-item>
+      <a-form-item style='display: none;'>
+        <a-input
+          type='hidden'
+          v-decorator="['old_user_id', {initialValue: details.user_id}]"
+        />
+      </a-form-item>
       <a-form-item v-bind='formItemLayout' label='关联用户'>
         <a-row :gutter='8'>
           <a-col :span='12'>
@@ -110,6 +116,9 @@
           <a-select-option value="4">
             变卖
           </a-select-option>
+          <a-select-option value="5">
+            报废
+          </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item v-bind='tailFormItemLayout'>
@@ -118,6 +127,12 @@
         </a-button>
       </a-form-item>
     </a-form>
+    <a-divider>用户使用记录</a-divider>
+    <a-table :columns='log_columns' :data-source='logs' :pagination='false' rowKey='id'>
+      <span slot='name' slot-scope='text'>{{ text.user_info.name }} {{text.user_info.name_en}}</span>
+      <span slot='stime' slot-scope='text'>{{ new Date(parseInt(text.start_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') }}</span>
+      <span slot='etime' slot-scope='text'>{{ new Date(parseInt(text.end_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') }}</span>
+    </a-table>
   </section>
 </template>
 
@@ -162,7 +177,22 @@ export default {
       },
       users: [],
       monitors: [],
-      details: {}
+      details: {},
+      logs: [],
+      log_columns: [
+        {
+          title: '姓名',
+          scopedSlots: { customRender: 'name' }
+        },
+        {
+          title: '开始使用时间',
+          scopedSlots: { customRender: 'stime' }
+        },
+        {
+          title: '结束使用时间',
+          scopedSlots: { customRender: 'etime' }
+        },
+      ]
     }
   },
   async created() {
@@ -174,6 +204,8 @@ export default {
     let { result } = await this.$axios.$get(this.$store.state.api.getPath)
     this.path = result
 
+    let logs = await this.$axios.$get(this.$store.state.api.getOtherLogs, { params: { id } })
+    this.logs = logs.result
 
     let details = await this.$axios.$get(this.$store.state.api.getOtherDetails, { params: { id } })
     this.details = details.result.data[0]
@@ -224,7 +256,7 @@ export default {
         this.$message.success({ content: 'OK!', key, duration: 2 })
         this.$router.push('/assets/other')
       } else {
-        this.$message.error({ content: 'Fail!', key, duration: 2 })
+        this.$message.error({ content: result.message, key, duration: 2 })
       }
     },
     async getUserAll() {

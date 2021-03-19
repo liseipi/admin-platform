@@ -21,6 +21,12 @@
           ]"
         />
       </a-form-item>
+      <a-form-item style='display: none;'>
+        <a-input
+          type='hidden'
+          v-decorator="['old_user_id', {initialValue: details.user_id}]"
+        />
+      </a-form-item>
       <a-form-item v-bind='formItemLayout' label='关联用户'>
         <a-row :gutter='8'>
           <a-col :span='12'>
@@ -109,6 +115,9 @@
           </a-select-option>
           <a-select-option value="4">
             变卖
+          </a-select-option>
+          <a-select-option value="5">
+            报废
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -224,9 +233,7 @@ export default {
     },
     async sendUpdate(data) {
       let { id } = this.$route.query
-      console.log(data)
       this.$message.loading({ content: 'Save...', key })
-      console.log(data)
       let result = await this.$axios.$post(this.$store.state.api.assetsUpdate, {
         data: data
       }, {
@@ -238,7 +245,7 @@ export default {
         this.$message.success({ content: 'OK!', key, duration: 2 })
         this.$router.push('/assets')
       } else {
-        this.$message.error({ content: 'Fail!', key, duration: 2 })
+        this.$message.error({ content: result.message, key, duration: 2 })
       }
     },
     async getUserAll() {

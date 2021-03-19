@@ -37,6 +37,9 @@
           <a-select-option value="4">
             变卖
           </a-select-option>
+          <a-select-option value='5'>
+            报废
+          </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label='关键字'>
@@ -245,6 +248,9 @@ export default {
           break;
         case 4:
           status = '变卖'
+          break;
+        case 5:
+          status = '报废'
           break;
         default:
           status = '-'

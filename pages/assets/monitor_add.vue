@@ -94,6 +94,9 @@
           <a-select-option value="4">
             变卖
           </a-select-option>
+          <a-select-option value="5">
+            报废
+          </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item v-bind='tailFormItemLayout'>
@@ -173,7 +176,7 @@ export default {
         this.$message.success({ content: 'OK!', key, duration: 2 })
         this.$router.push('/assets/monitor')
       } else {
-        this.$message.error({ content: 'Fail!', key, duration: 2 })
+        this.$message.error({ content: result.message, key, duration: 2 })
       }
     },
     async getUserAll(){

@@ -14,6 +14,7 @@
           <h4>闲置：{{desktop.status2}}</h4>
           <h4>维修中：{{desktop.status3}}</h4>
           <h4>变卖：{{desktop.status4}}</h4>
+          <h4>报废：{{desktop.status5}}</h4>
         </a-card>
       </a-col>
       <a-col :span="8">
@@ -24,6 +25,7 @@
           <h4>闲置：{{monitor.status2}}</h4>
           <h4>维修中：{{monitor.status3}}</h4>
           <h4>变卖：{{monitor.status4}}</h4>
+          <h4>报废：{{monitor.status5}}</h4>
         </a-card>
       </a-col>
       <a-col :span="8">
@@ -34,6 +36,7 @@
           <h4>闲置：{{other.status2}}</h4>
           <h4>维修中：{{other.status3}}</h4>
           <h4>变卖：{{other.status4}}</h4>
+          <h4>报废：{{other.status5}}</h4>
         </a-card>
       </a-col>
     </a-row>

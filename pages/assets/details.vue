@@ -27,6 +27,9 @@
           资产编号：{{ data.snID }}
         </a-list-item>
         <a-list-item>
+          状态：{{ deviceStatus(data.status) }}
+        </a-list-item>
+        <a-list-item>
           公司：{{ data.attribution_name }}
         </a-list-item>
         <a-list-item>
@@ -70,6 +73,12 @@
 <!--        <a-table :columns='columns' :data-source='data.monitor_info' :pagination='false' rowKey='snID'>-->
 <!--          <a slot='name' slot-scope='text'>{{ text }}</a>-->
 <!--        </a-table>-->
+        <a-divider>用户使用记录</a-divider>
+        <a-table :columns='log_columns' :data-source='logs' :pagination='false' rowKey='snID'>
+          <span slot='name' slot-scope='text'>{{ text.user_info.name }} {{text.user_info.name_en}}</span>
+          <span slot='stime' slot-scope='text'>{{ new Date(parseInt(text.start_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') }}</span>
+          <span slot='etime' slot-scope='text'>{{ new Date(parseInt(text.end_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') }}</span>
+        </a-table>
       </a-list>
     </div>
   </section>
@@ -88,6 +97,7 @@ export default {
       qrcode_uri: '',
       canvasImg: '',
       data: null,
+      logs: [],
       columns: [
         {
           title: '资产编号',
@@ -104,6 +114,20 @@ export default {
           key: 'model',
           dataIndex: 'model'
         }
+      ],
+      log_columns: [
+        {
+          title: '姓名',
+          scopedSlots: { customRender: 'name' }
+        },
+        {
+          title: '开始使用时间',
+          scopedSlots: { customRender: 'stime' }
+        },
+        {
+          title: '结束使用时间',
+          scopedSlots: { customRender: 'etime' }
+        },
       ]
     }
   },
@@ -113,6 +137,9 @@ export default {
 
     let { result } = await this.$axios.$get(this.$store.state.api.getAssetsDetails, { params: { id } })
     this.data = result.data[0]
+
+    let logs = await this.$axios.$get(this.$store.state.api.getDesktopLogs, { params: { id } })
+    this.logs = logs.result
   },
   methods: {
     generateQrcode() {
@@ -184,6 +211,32 @@ export default {
     },
     print() {
       printJS(this.canvasImg, 'image')
+    },
+    deviceStatus(s) {
+      let status = ''
+      switch (parseInt(s)) {
+        case 0:
+          status = '正常'
+          break;
+        case 1:
+          status = '损坏'
+          break;
+        case 2:
+          status = '闲置'
+          break;
+        case 3:
+          status = '维修中'
+          break;
+        case 4:
+          status = '变卖'
+          break;
+        case 5:
+          status = '报废'
+          break;
+        default:
+          status = '-'
+      }
+      return status
     }
   },
   mounted() {

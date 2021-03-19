@@ -109,6 +109,9 @@
           <a-select-option value="4">
             变卖
           </a-select-option>
+          <a-select-option value="5">
+            报废
+          </a-select-option>
         </a-select>
 <!--        <a-switch default-checked checked-children='正常' un-checked-children='损坏'-->
 <!--                  v-decorator="['status', { initialValue: true, valuePropName: '1' }]" />-->
@@ -207,12 +210,12 @@ export default {
       let result = await this.$axios.$post(this.$store.state.api.assetsAdd, {
         data: data
       })
-      console.log(result)
+      // console.log(result)
       if (result.statusCode === 200) {
         this.$message.success({ content: 'OK!', key, duration: 2 })
         this.$router.push('/assets')
       } else {
-        this.$message.error({ content: 'Fail!', key, duration: 2 })
+        this.$message.error({ content: result.message, key, duration: 2 })
       }
     },
     async getUserAll(){
