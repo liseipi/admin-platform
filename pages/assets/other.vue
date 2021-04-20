@@ -90,7 +90,7 @@
 <script>
 import QRCode from 'qrcode'
 import { jsPDF } from 'jspdf'
-import simhei from '@/plugins/simhei-bold'
+import yaheibold from '@/plugins/yaheibold-bold'
 
 export default {
   name: 'monitor-assets',
@@ -199,22 +199,22 @@ export default {
 
         let generateContent = async (item) => {
           // 画线圈
-          doc.setLineWidth(1.5)
-          doc.setLineDash([4, 4, 12, 3, 2, 2, 12, 3, 4, 3, 12, 4])
-          doc.setDrawColor(0)
-          doc.setFillColor(255, 255, 255)
-          doc.roundedRect(10, 10, 774, 320, 3, 3, 'FD')
+          // doc.setLineWidth(1.5)
+          // doc.setLineDash([4, 4, 12, 3, 2, 2, 12, 3, 4, 3, 12, 4])
+          // doc.setDrawColor(0)
+          // doc.setFillColor(255, 255, 255)
+          // doc.roundedRect(10, 10, 774, 320, 3, 3, 'FD')
 
           let qrcode = await this.generateQrcode(item.id)
           doc.addImage(qrcode, 'JPEG', 25, 45, 240, 240)
 
-          doc.setFont('simhei', 'bold')
+          doc.setFont('yaheibold', '', 'bold')
           doc.setFontSize(60)
           doc.text(item.attribution_name, 300, 100)
 
-          doc.addImage('/image/logo.jpg', 'JPEG', 455, 50, 300, 122)
+          doc.addImage('/image/logo-gray.jpg', 'JPEG', 455, 50, 300, 122)
 
-          doc.setFontSize(50)
+          doc.setFontSize(45)
           doc.text(`部门：${item.department_name}`, 300, 200)
 
           doc.text(`资产编号：${item.snID}`, 300, 260)

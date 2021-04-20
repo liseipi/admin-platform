@@ -99,7 +99,7 @@
 <script>
 import { jsPDF } from 'jspdf'
 import QRCode from 'qrcode'
-import simhei from '@/plugins/simhei-bold'
+import yaheibold from '@/plugins/yaheibold-bold'
 
 export default {
   name: 'pc-assets',
@@ -237,13 +237,13 @@ export default {
           let qrcode = await this.generateQrcode(item.id)
           doc.addImage(qrcode, 'JPEG', 25, 45, 240, 240)
 
-          doc.setFont('simhei', 'bold')
+          doc.setFont('yaheibold', '', 'bold')
           doc.setFontSize(60)
           doc.text(item.attribution_name, 300, 100)
 
-          doc.addImage('/image/logo.jpg', 'JPEG', 455, 50, 300, 122)
+          doc.addImage('/image/logo-gray.jpg', 'JPEG', 455, 50, 300, 122)
 
-          doc.setFontSize(50)
+          doc.setFontSize(45)
           doc.text(`部门：${item.department_name}`, 300, 200)
 
           doc.text(`资产编号：${item.snID}`, 300, 260)
@@ -266,22 +266,22 @@ export default {
       switch (parseInt(s)) {
         case 0:
           status = '正常'
-          break;
+          break
         case 1:
           status = '损坏'
-          break;
+          break
         case 2:
           status = '闲置'
-          break;
+          break
         case 3:
           status = '维修中'
-          break;
+          break
         case 4:
           status = '变卖'
-          break;
+          break
         case 5:
           status = '报废'
-          break;
+          break
         default:
           status = '-'
       }

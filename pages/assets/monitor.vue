@@ -89,7 +89,7 @@
 <script>
 import QRCode from 'qrcode'
 import { jsPDF } from 'jspdf'
-import simhei from '@/plugins/simhei-bold'
+import yaheibold from '@/plugins/yaheibold-bold'
 
 export default {
   name: 'monitor-assets',
@@ -207,13 +207,13 @@ export default {
           let qrcode = await this.generateQrcode(item.id)
           doc.addImage(qrcode, 'JPEG', 25, 45, 240, 240)
 
-          doc.setFont('simhei', 'bold')
+          doc.setFont('yaheibold', '', 'bold')
           doc.setFontSize(60)
           doc.text(item.attribution_name, 300, 100)
 
-          doc.addImage('/image/logo.jpg', 'JPEG', 455, 50, 300, 122)
+          doc.addImage('/image/logo-gray.jpg', 'JPEG', 455, 50, 300, 122)
 
-          doc.setFontSize(50)
+          doc.setFontSize(45)
           doc.text(`部门：${item.department_name}`, 300, 200)
 
           doc.text(`资产编号：${item.snID}`, 300, 260)
